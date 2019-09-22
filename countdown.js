@@ -73,7 +73,7 @@ var RevealCountDown =
       counterRef = currentSlide.getElementsByTagName("countdown")[0];
 
       if (counterRef === undefined) return;
-      time = counterRef.getAttribute("time");§
+      time = counterRef.getAttribute("time");
       autostart = counterRef.getAttribute("autostart");
       elapsedTime = 0;
       startTime = time ? time : options.defaultTime;
