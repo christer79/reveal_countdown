@@ -19,9 +19,7 @@ Using the plugin is easy. First, register it in your Reveal.js initialize block.
 
 ```
 
-Then simply add an element into your presentation with a data-external or data-external-replace attribute.
-
-## Example
+Then simply add an element into your presentation:
 
 ```html
 <section>
@@ -29,6 +27,12 @@ Then simply add an element into your presentation with a data-external or data-e
   <countdown time="300" autostart="yes" />
 </section>
 ```
+
+### Pause/Resume
+
+The defult keybinding to toggle pause/resume the timer is **t**
+
+The timer will also pause when th epresentation is paused by pressing the period dot.
 
 ## Configuration
 
