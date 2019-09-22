@@ -1,6 +1,6 @@
 {
   "name": "reveal.js-countdown",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A plugin to add countdown timers to reveal.js presentations.",
   "main": "countdown.js",
   "scripts": {
