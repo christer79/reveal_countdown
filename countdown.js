@@ -13,7 +13,9 @@ var RevealCountDown =
     var defaultOptions = {
       defaultTime: 300,
       autostart: "no",
-      tDelta: 30
+      tDelta: 30,
+      tickSound: "http://soundbible.com/grab.php?id=2044&type=mp3",
+      timesUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3"
     };
 
     defaults(options, defaultOptions);
@@ -25,11 +27,9 @@ var RevealCountDown =
         }
       }
     }
-    var tick = new Audio(
-      "http://soundbible.com/grab.php?id=2044&type=mp3http://soundbible.com/grab.php?id=2044&type=mp3"
-    );
 
-    var endSound = new Audio("http://soundbible.com/grab.php?id=1746&type=mp3");
+    var tick = new Audio(options.tickSound);
+    var endSound = new Audio(options.timesUpSound);
     var counterRef = null;
     var interval = null;
     var startTime = 0;
@@ -114,7 +114,7 @@ var RevealCountDown =
           elapsedTime = elapsedTime + 1;
           updateTimer(startTime - elapsedTime);
           if (startTime < elapsedTime + 10) tick.play();
-          if (elapsedTime === startTime) endSound.play();
+          if (elapsedTime >= startTime) endSound.play();
         }
       }, 1000);
     }
