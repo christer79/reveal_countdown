@@ -12,7 +12,8 @@ var RevealCountDown =
 
     var defaultOptions = {
       defaultTime: 300,
-      autostart: "no"
+      autostart: "no",
+      tDelta: 30
     };
 
     defaults(options, defaultOptions);
@@ -24,7 +25,11 @@ var RevealCountDown =
         }
       }
     }
+    var tick = new Audio(
+      "http://soundbible.com/grab.php?id=2044&type=mp3http://soundbible.com/grab.php?id=2044&type=mp3"
+    );
 
+    var endSound = new Audio("http://soundbible.com/grab.php?id=1746&type=mp3");
     var counterRef = null;
     var interval = null;
     var startTime = 0;
@@ -35,11 +40,34 @@ var RevealCountDown =
       initCountDown(event.currentSlide);
     });
 
+    // If timer is on first slide start on ready
+    Reveal.addEventListener("ready", function(event) {
+      initCountDown(event.currentSlide);
+    });
+
     Reveal.addKeyBinding(
-      { keyCode: 84, key: "T", description: "Start timer" },
+      { keyCode: 84, key: "T", description: "Pause/Unpause timer" },
       function() {
         togglePauseTimer();
       }
+    );
+
+    Reveal.addKeyBinding(
+      {
+        keyCode: 187,
+        key: "+",
+        description: "Increase timer with tDelta seconds"
+      },
+      increaseTime
+    );
+
+    Reveal.addKeyBinding(
+      {
+        keyCode: 189,
+        key: "-",
+        description: "Decrease time with tDelta seconds"
+      },
+      decreseTime
     );
 
     function updateTimer(timeLeft) {
@@ -47,12 +75,33 @@ var RevealCountDown =
       secondsLeft = timeLeft;
       minutesLeft = Math.floor(secondsLeft / 60);
       secondsLeft = secondsLeft % 60;
+      hoursLeft = Math.floor(minutesLeft / 60);
+      minutesLeft = minutesLeft % 60;
+
+      if (hoursLeft > 0) {
+        counterRef.innerHTML =
+          hoursLeft + " h " + minutesLeft + " m " + secondsLeft + " s";
+        return;
+      }
       if (minutesLeft > 0) {
         counterRef.innerHTML = minutesLeft + " m " + secondsLeft + " s";
+        return;
       }
       if (minutesLeft <= 0) {
         counterRef.innerHTML = secondsLeft + " s";
+        return;
       }
+    }
+
+    function increaseTime() {
+      startTime = Number(startTime) + Number(options.tDelta);
+      updateTimer(startTime - elapsedTime);
+    }
+
+    function decreseTime() {
+      startTime = Number(startTime) - Number(options.tDelta);
+      if (startTime < elapsedTime) startTime = elapsedTime;
+      updateTimer(startTime - elapsedTime);
     }
 
     function togglePauseTimer() {
@@ -60,10 +109,12 @@ var RevealCountDown =
     }
 
     function startTimer() {
-      interval = setInterval(function() {
+      interval = setInterval(async function() {
         if (elapsedTime < startTime && running && !Reveal.isPaused()) {
           elapsedTime = elapsedTime + 1;
           updateTimer(startTime - elapsedTime);
+          if (startTime < elapsedTime + 10) tick.play();
+          if (elapsedTime === startTime) endSound.play();
         }
       }, 1000);
     }
@@ -71,20 +122,18 @@ var RevealCountDown =
     function initCountDown(currentSlide) {
       if (interval != null) clearInterval(interval);
       counterRef = currentSlide.getElementsByTagName("countdown")[0];
-
       if (counterRef === undefined) return;
       time = counterRef.getAttribute("time");
       autostart = counterRef.getAttribute("autostart");
       elapsedTime = 0;
       startTime = time ? time : options.defaultTime;
       startTimer();
+      updateTimer(startTime - elapsedTime);
       running = autostart === "yes" ? true : false;
     }
 
     return {
-      init: function() {
-        console.log("Init CountDown");
-      }
+      init: function() {}
     };
   })();
 

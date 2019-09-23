@@ -34,12 +34,16 @@ The defult keybinding to toggle pause/resume the timer is **t**
 
 The timer will also pause when th epresentation is paused by pressing the period dot.
 
+### increase Decrease counter time
+
+Use the **+** and **-** keys to increment decrement timer with tDelta seconds. tDelta can be configured as seen in the next section.
+
 ## Configuration
 
 The plugin can be configured with default values and settings in the initialize function:
 
 ```javascript
-    countdown: { defaultTime: 600, autostart: "no" }
+    countdown: { defaultTime: 600, autostart: "no", tDelta: 60 }
 ```
 
 defaults are:
@@ -47,6 +51,7 @@ defaults are:
 ```javascript
 {
   defaultTime: 300,
-  autostart: "no"
+  autostart: "no",
+  tDelta: 30
 }
 ```
