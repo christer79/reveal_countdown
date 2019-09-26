@@ -42,8 +42,21 @@ Use the **+** and **-** keys to increment decrement timer with tDelta seconds. t
 
 The plugin can be configured with default values and settings in the initialize function:
 
+- defaultTime: Default time for a timer if no time is given as attribute to <countodwn/>
+- autostart: yes/no wether a timer should auotstart or not when the slide with timer loads
+- tDelta: nr of seconds to increase decreas when pressing '+' and '-' key.
+- tickSound: Sound to play every second for the last X seconds.
+- timesUpSound: Sound to play when the time is up.
+
 ```javascript
-    countdown: { defaultTime: 600, autostart: "no", tDelta: 60 }
+    countdown: {
+      defaultTime: 600,
+      autostart: "no",
+      tDelta: 60,
+      playTickSoundLast: 10,
+      tickSound: "http://soundbible.com/grab.php?id=2044&type=mp3",
+      timeIsUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3"
+    }
 ```
 
 defaults are:
@@ -52,6 +65,9 @@ defaults are:
 {
   defaultTime: 300,
   autostart: "no",
-  tDelta: 30
+  tDelta: 30,
+  playTickSoundLast: 10,
+  tickSound: "",
+  timeIsUpSound: ""
 }
 ```

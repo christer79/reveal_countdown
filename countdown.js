@@ -8,14 +8,14 @@ var RevealCountDown =
   window.RevealCountDown ||
   (function() {
     var options = Reveal.getConfig().countdown || {};
-    console.log("CountDown ", options);
 
     var defaultOptions = {
       defaultTime: 300,
       autostart: "no",
       tDelta: 30,
-      tickSound: "http://soundbible.com/grab.php?id=2044&type=mp3",
-      timesUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3"
+      playTickSoundLast: 10,
+      tickSound: "",
+      timeIsUpSound: ""
     };
 
     defaults(options, defaultOptions);
@@ -28,8 +28,9 @@ var RevealCountDown =
       }
     }
 
-    var tick = new Audio(options.tickSound);
-    var endSound = new Audio(options.timesUpSound);
+    var tick = options.tickSound != "" ? new Audio(options.tickSound) : null;
+    var endSound =
+      options.timeIsUpSound != "" ? new Audio(options.timeIsUpSound) : null;
     var counterRef = null;
     var interval = null;
     var startTime = 0;
@@ -113,8 +114,9 @@ var RevealCountDown =
         if (elapsedTime < startTime && running && !Reveal.isPaused()) {
           elapsedTime = elapsedTime + 1;
           updateTimer(startTime - elapsedTime);
-          if (startTime < elapsedTime + 10) tick.play();
-          if (elapsedTime >= startTime) endSound.play();
+          if (tick && startTime < elapsedTime + options.playTickSoundLast)
+            tick.play();
+          if (endSound && elapsedTime >= startTime) endSound.play();
         }
       }, 1000);
     }
