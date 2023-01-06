@@ -4,18 +4,28 @@
  *
  * @author Christer Eriksson
  */
-var RevealCountDown =
-  window.RevealCountDown ||
-  (function() {
-    var options = Reveal.getConfig().countdown || {};
+window.RevealCountDown = window.RevealCountDown || {
+  id: 'RevealCountDown',
+  init: function(deck) {
+    initCountDown(deck);
+  },
+  togglePauseTimer: function() { togglePauseTimer(); },
+  increaseTime: function() { increaseTime(); },
+  decreseTime: function() { decreseTime(); }
+};
 
+
+const initCountDown = function(Reveal){
+    var options = Reveal.getConfig().countdown || {};
     var defaultOptions = {
       defaultTime: 300,
       autostart: "no",
       tDelta: 30,
       playTickSoundLast: 10,
       tickSound: "",
-      timeIsUpSound: ""
+      timeIsUpSound: "",
+      plusKey: 187,
+      minusKey: 189
     };
 
     defaults(options, defaultOptions);
@@ -55,7 +65,7 @@ var RevealCountDown =
 
     Reveal.addKeyBinding(
       {
-        keyCode: 187,
+        keyCode: options.plusKey,
         key: "+",
         description: "Increase timer with tDelta seconds"
       },
@@ -64,7 +74,7 @@ var RevealCountDown =
 
     Reveal.addKeyBinding(
       {
-        keyCode: 189,
+        keyCode: options.minusKey,
         key: "-",
         description: "Decrease time with tDelta seconds"
       },
@@ -134,9 +144,8 @@ var RevealCountDown =
       running = autostart === "yes" ? true : false;
     }
 
-    return {
-      init: function() {}
-    };
-  })();
-
-Reveal.registerPlugin("countdown", RevealCountDown);
+    this.togglePauseTimer = togglePauseTimer;
+    this.increaseTime = increaseTime;
+    this.decreseTime = decreseTime;
+    return this;
+};
