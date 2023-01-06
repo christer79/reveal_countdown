@@ -7,7 +7,7 @@ This plugin let you add a countdown timer to your reveal.js presentations
 Using the plugin is easy. First, register it in your Reveal.js initialize block.
 
 ```javascript
-
+    // Old reveal versions
     Reveal.initialize({
         dependencies: [
             ....
@@ -17,6 +17,21 @@ Using the plugin is easy. First, register it in your Reveal.js initialize block.
         countdown: { defaultTime: 600, autostart: "no" }
       });
 
+
+// New reveal versions 
+  Reveal.configure({
+    ...
+    countdown: {
+      defaultTime: 900,
+      autostart: "no",
+      tDelta: 60,
+      playTickSoundLast: 10,
+      tickSound: "http://soundbible.com/grab.php?id=2044&type=mp3",
+      timeIsUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3"
+    }
+  })
+  
+  Reveal.registerPlugin(RevealCountDown)
 ```
 
 Then simply add an element into your presentation:
@@ -55,7 +70,9 @@ The plugin can be configured with default values and settings in the initialize 
       tDelta: 60,
       playTickSoundLast: 10,
       tickSound: "http://soundbible.com/grab.php?id=2044&type=mp3",
-      timeIsUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3"
+      timeIsUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3",
+      plusKey: 171, //SPANISH keyboard
+      minusKey: 173 //SPANISH keyboard
     }
 ```
 
@@ -68,6 +85,42 @@ defaults are:
   tDelta: 30,
   playTickSoundLast: 10,
   tickSound: "",
-  timeIsUpSound: ""
+  timeIsUpSound: "",
+  plusKey: 187,
+  minusKey: 189
 }
+```
+
+
+## Integration with Custom Controls plugin
+
+You can integrate it with the custom control plugin
+
+```javascript
+  Reveal.configure({
+    customcontrols: {
+      controls: [
+        {
+          icon: '<i class="fas fa-hourglass-start"></i>',
+          title: 'Pause/Unpause timer (T)',
+          action: 'RevealCountDown.togglePauseTimer()'
+        }
+      ]
+
+    countdown: {
+      defaultTime: 900,
+      autostart: "no",
+      tDelta: 60,
+      playTickSoundLast: 10,
+      tickSound: "http://soundbible.com/grab.php?id=2044&type=mp3",
+      timeIsUpSound: "http://soundbible.com/grab.php?id=1746&type=mp3"
+    }
+  })
+  
+  const params = new URLSearchParams(window.location.search);
+  if (! params.has("print-pdf")) {
+    Reveal.registerPlugin(RevealCustomControls)
+  }
+  Reveal.registerPlugin(RevealCountDown)
+
 ```
